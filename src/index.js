@@ -11,14 +11,6 @@ import App from './App';
 import './plotNoFeatures/logger';
 import { ErrorBoundary } from 'react-error-boundary';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import DashBoard from 'Dashboard';
-import Signup from 'Signup';
-import Login from 'Login';
-import ProtectedRoute from 'layouts/ProtectedRoute';
-import PrivacyPolicy from 'PrivacyPolicy';
-import TermsOfService from 'TermsOfService';
-import Secret from 'Secret';
-import Billing from 'Billing';
 
 // if (window.location.host !== 'studio.polotno.com') {
 //   console.log(
@@ -75,48 +67,10 @@ function Fallback({ error, resetErrorBoundary }) {
     </div>
   );
 }
-const ExternalRedirect = () => {
-  useEffect(() => {
-    window.location.href = 'https://www.flashkit.co.uk/';
-  }, []);
-  return null;
-};
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <ExternalRedirect />, // Redirect to external URL,
-  },
-  {
-    path: "/dashboard",
-    element: <ProtectedRoute><DashBoard store={store}/></ProtectedRoute>,
-  },
-  {
-    path: "/privacy",
-    element: <PrivacyPolicy />,
-  },
-  {
-    path: "/terms",
-    element: <TermsOfService />,
-  },
-  {
-    path: "/signup",
-    element: <Signup />,
-  },
-  {
-    path: "/login",
-    element: <Login />,
-  },
-  {
-    path: "/canvas",
-    element: <ProtectedRoute><App  store={store} /></ProtectedRoute>,
-  },
-  {
-    path: "/billing",
-    element: <Billing />,
-  },
-  {
-    path: "/secret",
-    element: <Secret />,
+    element: <App  store={store} />, // Redirect to external URL,
   }
 ]);
 

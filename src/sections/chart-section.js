@@ -5,9 +5,7 @@ import { Button } from '@blueprintjs/core';
 import { observer } from 'mobx-react-lite';
 import { AreaChartDisplay } from '../components/charts/AreaChartDisplay';
 import BarChartDisplay from '../components/charts/BarChartDisplay';
-import { InsightsChart } from '../components/charts/InsightsChart';
 import LineChartDisplay from '../components/charts/LineChartDisplay';
-import { MonthlyEngagementChart } from '../components/charts/MonthlyEngagementChart';
 import RadarChartDisplay from '../components/charts/RadarChartDisplay';
 import RadialChartDisplay from '../components/charts/RadialChartDisplay';
 import html2canvas from 'html2canvas';
@@ -80,14 +78,8 @@ export const ChartSection = {
         <ChartWrapper store={store} name="Bar">
           <BarChartDisplay />
         </ChartWrapper>
-        <ChartWrapper store={store} name="Insights">
-          <InsightsChart />
-        </ChartWrapper>
         <ChartWrapper store={store} name="Line">
           <LineChartDisplay />
-        </ChartWrapper>
-        <ChartWrapper store={store} name="Monthly Engagement">
-          <MonthlyEngagementChart />
         </ChartWrapper>
         <ChartWrapper store={store} name="Radar">
           <RadarChartDisplay />
