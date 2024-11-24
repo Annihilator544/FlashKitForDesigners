@@ -6,6 +6,7 @@
   "private": true,
   "dependencies": {
     "@auth0/auth0-react": "^2.2.1",
+    "@aws-sdk/client-s3": "^3.699.0",
     "@blueprintjs/core": "^5.11.0",
     "@blueprintjs/icons": "^5.11.0",
     "@hookform/resolvers": "^3.9.0",

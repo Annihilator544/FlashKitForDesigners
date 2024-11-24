@@ -14,6 +14,7 @@ import { Input } from '../components/ui/input';
 import { LucideGem } from 'lucide-react';
 import { Button } from '../components/ui/button';
 import { Badge } from '../components/ui/badge';
+import ShareButton from './s3-upload';
 
 const NavbarContainer = styled('div')`
   white-space: nowrap;
@@ -136,10 +137,10 @@ export default observer(({ store }) => {
               onChange={(e) => {
                 window.project.name = e.target.value;
                 window.project.requestSave();
-                console.log(window.project.name);
               }}
               className={' bg-white '}
             />
+          <ShareButton store={store} />
           <DownloadButton store={store} />
           </div>
           {/* <UserMenu store={store} project={project} /> */}
