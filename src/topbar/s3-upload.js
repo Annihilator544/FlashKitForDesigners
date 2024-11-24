@@ -7,6 +7,7 @@ import { LucideUpload } from 'lucide-react';
 import { observer } from 'mobx-react-lite';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '../components/ui/dialog';
 import { useProject } from 'plotNoFeatures/project';
+import { cn } from '../lib/utils.ts';
 
 const s3Client = new S3Client({
   region: 'eu-west-2', // e.g., 'us-east-1'
@@ -15,7 +16,6 @@ const s3Client = new S3Client({
     secretAccessKey: process.env.REACT_APP_AWS_SECRET_ACCESS_KEY,
   }
 });
-console.log('s3Client:', process.env.REACT_APP_AWS_ACCESS_KEY_ID, process.env.REACT_APP_AWS_SECRET_ACCESS_KEY);
 
 const ShareButton = observer(({ store }) => {
   const [uploading, setUploading] = useState(false);
@@ -89,9 +89,9 @@ const ShareButton = observer(({ store }) => {
             </DialogDescription>
             </DialogHeader>
             <DialogFooter>
-                <Button className="mt-5" variant={window.project.name ? "default" : "disabled"} onClick={()=>handleFileUpload()}>
+                <Button className={cn("mt-5",uploading?"opacity-80":"")} variant={window.project.name ? "default" : "disabled"} onClick={()=>handleFileUpload()}>
                     <LucideUpload className="h-4 mr-2" />
-                    Share
+                    {uploading ?"Uploading ..." : "Share"}
                 </Button>
             </DialogFooter>
         </DialogContent>
