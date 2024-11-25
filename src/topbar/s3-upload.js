@@ -19,6 +19,7 @@ const s3Client = new S3Client({
 
 const ShareButton = observer(({ store }) => {
   const [uploading, setUploading] = useState(false);
+  const [isUploaded, setIsUploaded] = useState(false);
   const bucketName = 'flashkitmarketplace';
   const project = useProject();
 
@@ -38,7 +39,6 @@ const ShareButton = observer(({ store }) => {
         ContentType: 'application/json',
       });
       console.log('Uploading file:', command);
-      //disable the button if the file is not selected
         if (window.project.name&&window.project.name==='') {
             console.log('Please select a file to upload');
             return;
@@ -50,6 +50,7 @@ const ShareButton = observer(({ store }) => {
       console.error('Error uploading file:', error);
     } finally {
       setUploading(false);
+      setIsUploaded(true);
     }
   };
 
@@ -89,12 +90,18 @@ const ShareButton = observer(({ store }) => {
                     label="File Name"
                     />
                 )}
+                {isUploaded && (
+                  <>
+                    <p className="mt-5 text-green-500">File uploaded successfully! Could be accesssed on the following link: </p>
+                    <a href={`https://app.flashkit.co.uk/canvas?awsKey=${window.project.name}`} target="_blank" rel="noreferrer" className="text-blue-500">{`https://app.flashkit.co.uk/canvas?awsKey=${window.project.name}`}</a>
+                  </>
+                )}
             </DialogDescription>
             </DialogHeader>
             <DialogFooter>
                 <Button className={cn("mt-5",uploading?"opacity-80":"")} variant={window.project.name ? "default" : "disabled"} onClick={()=>handleFileUpload()}>
-                    <LucideUpload className="h-4 mr-2" />
-                    {uploading ?"Uploading ..." : "Share"}
+                    {isUploaded ? <></>: <LucideUpload className="h-4 mr-2" />}
+                    {uploading ?"Uploading ..." : isUploaded ? "Uploaded": "Share"}
                 </Button>
             </DialogFooter>
         </DialogContent>
