@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { S3Client, ListObjectsV2Command, PutObjectCommand, GetObjectCommand } from '@aws-sdk/client-s3';
 import { Input } from '../components/ui/input';
 import { Button } from '../components/ui/button';
-import { LucideUpload } from 'lucide-react';
+import { Loader2, LucideUpload } from 'lucide-react';
 import { observer } from 'mobx-react-lite';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '../components/ui/dialog';
 import { useProject } from 'plotNoFeatures/project';
@@ -90,19 +90,26 @@ const ShareButton = observer(({ store }) => {
                     label="File Name"
                     />
                 )}
-                {isUploaded && (
-                  <>
-                    <p className="mt-5 text-green-500">File uploaded successfully! Could be accesssed on the following link: </p>
-                    <a href={`https://app.flashkit.co.uk/canvas?awsKey=${window.project.name}`} target="_blank" rel="noreferrer" className="text-blue-500">{`https://app.flashkit.co.uk/canvas?awsKey=${window.project.name}`}</a>
-                  </>
-                )}
             </DialogDescription>
             </DialogHeader>
             <DialogFooter>
-                <Button className={cn("mt-5",uploading?"opacity-80":"")} variant={window.project.name ? "default" : "disabled"} onClick={()=>handleFileUpload()}>
-                    {isUploaded ? <></>: <LucideUpload className="h-4 mr-2" />}
-                    {uploading ?"Uploading ..." : isUploaded ? "Uploaded": "Share"}
+            {uploading ? 
+                <Button className="mt-5" disabled>
+                  <Loader2 className="animate-spin h-4 mr-2" />
+                    Uploading
                 </Button>
+                :
+                window.project.name&&window.project.name!=='' ?
+                <Button className="mt-5" onClick={()=>handleFileUpload()}>
+                    {isUploaded ? <></>: <LucideUpload className="h-4 mr-2" />}
+                    {isUploaded ? "Uploaded": "Share to Marketplace"}
+                </Button>
+                :
+                <Button className="mt-5" disabled >
+                    {isUploaded ? <></>: <LucideUpload className="h-4 mr-2" />}
+                    {isUploaded ? "Uploaded": "Share to Marketplace"}
+                </Button>
+            }
             </DialogFooter>
         </DialogContent>
     </Dialog>
