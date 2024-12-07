@@ -7,7 +7,6 @@ import { Loader2, LucideUpload } from 'lucide-react';
 import { observer } from 'mobx-react-lite';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '../components/ui/dialog';
 import { useProject } from 'plotNoFeatures/project';
-import { cn } from '../lib/utils.ts';
 
 const s3Client = new S3Client({
   region: 'eu-west-2', // e.g., 'us-east-1'
@@ -25,27 +24,40 @@ const ShareButton = observer(({ store }) => {
 
   const handleFileUpload = async (event) => {
     const file = store.toJSON();
-    const fileName = `${window.project.name.trim()}.json`;
+    const fileName = `${window.project.name.trim()}`;
     //save image as well
-    const image = await store.toDataURL({ mimeType: 'image/jpeg' });
-    const Shareable = JSON.stringify({json: file, preview: image});
-
+    const imagePreview = await store.toDataURL({ mimeType: 'image/jpeg' });
+    const preview = JSON.stringify({ preview: imagePreview });
     setUploading(true);
     try {
       const command = new PutObjectCommand({
         Bucket: bucketName,
-        Key: fileName,
-        Body: Shareable,
+        Key: `Json/${fileName}.json`,
+        Body: file,
         ContentType: 'application/json',
       });
       console.log('Uploading file:', command);
-        if (window.project.name&&window.project.name==='') {
-            console.log('Please select a file to upload');
-            return;
-        }
-        else{
-            await s3Client.send(command);
-        }
+      if (window.project.name&&window.project.name==='') {
+          console.log('Please select a file to upload');
+          return;
+      }
+      else{
+          await s3Client.send(command);
+      }
+      const commandImage = new PutObjectCommand({
+        Bucket: bucketName,
+        Key: `Image/${fileName}.json`,
+        Body: preview,
+        ContentType: 'application/json',
+      });
+      console.log('Uploading file:', command);
+      if (window.project.name&&window.project.name==='') {
+          console.log('Please select a file to upload');
+          return;
+      }
+      else{
+          await s3Client.send(commandImage);
+      }
     } catch (error) {
       console.error('Error uploading file:', error);
     } finally {
