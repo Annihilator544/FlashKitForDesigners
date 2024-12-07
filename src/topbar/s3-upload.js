@@ -24,7 +24,9 @@ const ShareButton = observer(({ store }) => {
 
   const handleFileUpload = async (event) => {
     const file = store.toJSON();
+    const fileString = JSON.stringify({ json: file });
     const fileName = `${window.project.name.trim()}`;
+    console.log('Uploading file:', fileString);
     //save image as well
     const imagePreview = await store.toDataURL({ mimeType: 'image/jpeg' });
     const preview = JSON.stringify({ preview: imagePreview });
@@ -33,7 +35,7 @@ const ShareButton = observer(({ store }) => {
       const command = new PutObjectCommand({
         Bucket: bucketName,
         Key: `Json/${fileName}.json`,
-        Body: file,
+        Body: fileString,
         ContentType: 'application/json',
       });
       console.log('Uploading file:', command);
